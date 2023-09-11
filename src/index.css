@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+}
+
+@font-face {
+  src: url(font/Gilgan.otf);
+  font-family: Gilgan;
+}
+
+.gilgan {
+  font-family: "Gilgan";
+}
+
+:root {
+  font-family: gilgan;
+}
