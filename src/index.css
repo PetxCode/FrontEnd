@@ -16,5 +16,6 @@
 }
 
 :root {
-  font-family: gilgan;
+  font-family: gilgan, "Franklin Gothic Medium", "Arial Narrow", Arial,
+    sans-serif;
 }

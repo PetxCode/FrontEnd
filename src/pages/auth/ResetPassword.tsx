@@ -10,22 +10,16 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import LoadingScreen from "../../utils/LoadingScreen";
-import { SignInAPI, VerifiedAPI } from "../../api/authAPI";
+import { RegisterAPI, ResetPasswordAPI, VerifiedAPI } from "../../api/authAPI";
 import Swal from "sweetalert2";
-import { userState } from "../../global/GlobalState";
-import { useRecoilState, useRecoilValue } from "recoil";
 
-const SignIn = () => {
+const ResetPassword = () => {
   const { token } = useParams();
   const naviage = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
 
-  const [state, setState] = useRecoilState(userState);
-  const value = useRecoilValue(userState);
-
   const schema = yup.object({
     email: yup.string().email().required(),
-    password: yup.string().required(),
   });
 
   const {
@@ -39,18 +33,17 @@ const SignIn = () => {
   const handleRegister = handleSubmit(async (data) => {
     setLoading(true);
 
-    SignInAPI(data).then((res) => {
+    ResetPasswordAPI(data).then(() => {
       setLoading(false);
 
       Swal.fire({
         position: "center",
         icon: "success",
-        title: "Welcome Back",
+        title: "A mail has been sent to your email",
         showConfirmButton: false,
         timer: 1500,
       }).then(() => {
-        setState(res);
-        naviage("/");
+        naviage("/message");
       });
     });
   });
@@ -65,7 +58,9 @@ const SignIn = () => {
     <div className="flex items-center justify-center h-[100vh] ">
       {loading && <LoadingScreen />}
       <form className="w-[350px] border rounded p-4 " onSubmit={handleRegister}>
-        <div className="uppercase font-[900] text-[20px]">Sign In Screen</div>
+        <div className="uppercase font-[900] text-[20px]">
+          Reset Password Screen
+        </div>
 
         <div className="mt-8">
           <div className="text-[13px]">Email</div>
@@ -82,38 +77,18 @@ const SignIn = () => {
           )}
         </div>
 
-        <div className="mt-2">
-          <div className="text-[13px]">Password</div>
-          <input
-            className="w-full p-2 border outline-none rounded placeholder:text-[13px] "
-            placeholder="Password"
-            {...register("password")}
-          />
-
-          {errors.password?.message && (
-            <div className="text-[13px] w-full flex justify-end text-red-400 ">
-              error
-            </div>
-          )}
-        </div>
-
-        {!token && (
-          <div className="text-[13px] w-full flex justify-end text-blue-400 ">
-            <Link to="/reset-password">Forget Password</Link>
-          </div>
-        )}
         <button
           className="w-full flex items-center justify-center p-3 bg-red-400  text-white mt-4 rounded transition-all duration-300 hover:cursor-pointer hover:scale-[1.02]"
           type="submit"
         >
-          Sign In
+          Reset Password
         </button>
         <br />
         <hr />
         <div className="flex flex-col items-center text-[13px] text-[silver] my-4 ">
-          <div>Don't have an Account?</div>
-          <Link to="/register" className="text-red-400">
-            Sign Up here
+          <div>I think i now Remember?</div>
+          <Link to="/sign-in" className="text-red-400">
+            Go back to Sign in
           </Link>
         </div>
 
@@ -138,4 +113,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default ResetPassword;

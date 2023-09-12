@@ -1,10 +1,13 @@
 import { RouterProvider } from "react-router-dom";
 import { mainRouter } from "./router/mainRouter";
+import { RecoilRoot } from "recoil";
 
 const App = () => {
   return (
     <div>
-      <RouterProvider router={mainRouter} />
+      <RecoilRoot>
+        <RouterProvider router={mainRouter} />
+      </RecoilRoot>
     </div>
   );
 };
