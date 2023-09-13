@@ -1,13 +1,14 @@
 import React, { PropsWithChildren } from "react";
 import { useRecoilValue, useRecoilState } from "recoil";
-import { userState } from "../global/GlobalState";
+import { user, userState } from "../global/GlobalState";
 import { Navigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
+import { useSingleAccount } from "../hook/singleUser";
 
 const PrivateRoute: React.FC<PropsWithChildren> = ({ children }) => {
-  //   const [state, setState] = useRecoilState(userState);
   const value: any = useRecoilValue(userState);
-  const [state, setState] = useRecoilState(userState);
+  const [state, setState] = useRecoilState<any>(user);
+
   let myToken: any = {};
   let token: string = value;
 
@@ -16,10 +17,8 @@ const PrivateRoute: React.FC<PropsWithChildren> = ({ children }) => {
     setState(myToken.id);
   }
 
-  console.log("show me State: ", jwt_decode(token));
-
   return (
-    <div>{value ? <div>{children}</div> : <Navigate to="/sign-in" />}</div>
+    <div>{state ? <div>{children}</div> : <Navigate to="/sign-in" />}</div>
   );
 };
 

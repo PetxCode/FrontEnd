@@ -1,24 +1,37 @@
 import { createBrowserRouter } from "react-router-dom";
-import Register from "../pages/auth/Register";
-import HomeScreen from "../pages/home/HomeScreen";
-import MessagePage from "../utils/MessagePage";
-import SignIn from "../pages/auth/Signin";
-import ResetPassword from "../pages/auth/ResetPassword";
-import ChangePassword from "../pages/auth/ChangePassword";
-import PrivateRoute from "./privateRoute";
+import loadable from "@loadable/component";
+
+const Register = loadable(() => import("../pages/auth/Register"));
+const HomeScreen = loadable(() => import("../pages/home/HomeScreen"));
+const MessagePage = loadable(() => import("../utils/MessagePage"));
+const SignIn = loadable(() => import("../pages/auth/Signin"));
+const ResetPassword = loadable(() => import("../pages/auth/ResetPassword"));
+const ChangePassword = loadable(() => import("../pages/auth/ChangePassword"));
+const PrivateRoute = loadable(() => import("./privateRoute"));
+const ErrorHandles = loadable(() => import("../utils/ErrorHandles"));
+
+import { ErrorBoundary } from "react-error-boundary";
+import MainComponents from "./MainComponents";
+
+const MyErrorShown: any = ({ error }: any) => {
+  return <div>reading what this Error is: {error.message}</div>;
+};
 
 export const mainRouter = createBrowserRouter([
   {
     path: "/register",
     element: <Register />,
   },
-
   {
     path: "/",
+    // hasErrorBoundary: true,
+    // errorElement: <ErrorHandles />,
     element: (
-      //   <PrivateRoute>
-      <HomeScreen />
-      //   </PrivateRoute>
+      <ErrorBoundary fallbackRender={MyErrorShown}>
+        <PrivateRoute>
+          <MainComponents />
+        </PrivateRoute>
+      </ErrorBoundary>
     ),
   },
   {
